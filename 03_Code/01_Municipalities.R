@@ -35,12 +35,13 @@ colnames(muni09) <- names_table
 
 ## Some cleanup
 
-muni09 <- muni09 %>% filter(!is.na(gem)) %>% 
-  select(-one_of(c('txt', 'satzart'))) %>%
-  mutate(ags = paste0(land, rb, kreis, gem),
-         year = 2009,
-         east = ifelse(as.numeric(land > 10), 1, 0)) %>%
-  select(-one_of(c('rb', 'kreis', 'vg', 'gem')))
+muni09 <- muni09 %>% filter(!is.na(gem)) %>%              # Only gemeinden
+  select(-one_of(c('txt', 'satzart'))) %>%                # Drop some vars
+  mutate(ags = paste0(land, rb, kreis, gem),              # Gen AGS
+         year = 2009,                                     # Add Year
+         east = ifelse(as.numeric(land > 10), 1, 0)) %>%  # Add east dummy 
+  select(-one_of(c('rb', 'kreis', 'vg', 'gem'))) %>%      # Drop more vars
+  filter(!pop_tot == 0)                                   # Drop 'fake' Gemeinden
 
 #### 2010 ####
 
