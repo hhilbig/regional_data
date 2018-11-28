@@ -56,7 +56,8 @@ muni10 <- muni10 %>% filter(!is.na(gem)) %>%
   mutate(ags = paste0(land, rb, kreis, gem),
          year = 2010,
          east = ifelse(as.numeric(land > 10), 1, 0)) %>%
-  select(-one_of(c('rb', 'kreis', 'vg', 'gem')))
+  select(-one_of(c('rb', 'kreis', 'vg', 'gem'))) %>%      # Drop more vars
+  filter(!pop_tot == 0)                            
 
 #### 2011 ####
 
@@ -71,7 +72,8 @@ muni11 <- muni11 %>% filter(!is.na(gem)) %>%
   mutate(ags = paste0(land, rb, kreis, gem),
          year = 2011,
          east = ifelse(as.numeric(land > 10), 1, 0)) %>%
-  select(-one_of(c('rb', 'kreis', 'vg', 'gem')))
+  select(-one_of(c('rb', 'kreis', 'vg', 'gem'))) %>%      # Drop more vars
+  filter(!pop_tot == 0)                            
 
 #### 2012 ####
 
@@ -93,7 +95,8 @@ muni12 <- muni12 %>% filter(!is.na(gem)) %>%
          lat = str_replace_all(string = lat, 
                                pattern = ',', 
                                replacement = '\\.')) %>%
-  mutate(lon = as.numeric(lon), lat = as.numeric(lat)) 
+  mutate(lon = as.numeric(lon), lat = as.numeric(lat))  %>%      # Drop more vars
+  filter(!pop_tot == 0)                            
 
 #### 2013 ####
 
@@ -115,7 +118,8 @@ muni13 <- muni13 %>% filter(!is.na(gem)) %>%
          lat = str_replace_all(string = lat, 
                                pattern = ',', 
                                replacement = '\\.')) %>%
-  mutate(lon = as.numeric(lon), lat = as.numeric(lat)) 
+  mutate(lon = as.numeric(lon), lat = as.numeric(lat))  %>%      # Drop more vars
+  filter(!pop_tot == 0)                            
 
 #### 2014 ####
 
@@ -137,7 +141,8 @@ muni14 <- muni14 %>% filter(!is.na(gem)) %>%
          lat = str_replace_all(string = lat, 
                                pattern = ',', 
                                replacement = '\\.')) %>%
-  mutate(lon = as.numeric(lon), lat = as.numeric(lat)) 
+  mutate(lon = as.numeric(lon), lat = as.numeric(lat))  %>%      # Drop more vars
+  filter(!pop_tot == 0)                            
 
 #### 2015 ####
 
@@ -159,7 +164,8 @@ muni15 <- muni15 %>% filter(!is.na(gem)) %>%
          lat = str_replace_all(string = lat, 
                                pattern = ',', 
                                replacement = '\\.')) %>%
-  mutate(lon = as.numeric(lon), lat = as.numeric(lat)) 
+  mutate(lon = as.numeric(lon), lat = as.numeric(lat))  %>%      # Drop more vars
+  filter(!pop_tot == 0)                            
 
 #### 2016 ####
 
@@ -181,7 +187,8 @@ muni16 <- muni16 %>% filter(!is.na(gem)) %>%
          lat = str_replace_all(string = lat, 
                                pattern = ',', 
                                replacement = '\\.')) %>%
-  mutate(lon = as.numeric(lon), lat = as.numeric(lat)) 
+  mutate(lon = as.numeric(lon), lat = as.numeric(lat))  %>%      # Drop more vars
+  filter(!pop_tot == 0)                            
 
 #### 2017 ####
 
@@ -204,7 +211,8 @@ muni17 <- muni17 %>% filter(!is.na(gem)) %>%
                                pattern = ',', 
                                replacement = '\\.')) %>%
   mutate(lon = as.numeric(lon), 
-         lat = as.numeric(lat))
+         lat = as.numeric(lat)) %>%      # Drop more vars
+  filter(!pop_tot == 0)                            
 
 ## Make a list of the municipalities ## 
 
