@@ -19,7 +19,7 @@ library(readxl)
 library(openxlsx)
 library(reshape2)
 
-#### Unemmployment ####
+#### Unemployment ####
 
 unem_county <- read_delim('01_Raw_Data/Counties/kreis_unem.csv', skip = 3,
                           delim = ';', )
@@ -48,15 +48,24 @@ unem_county <- unem_county %>%
             funs(str_replace_all(., pattern = ',', replacement = '.'))) %>%
   mutate_at(vars(vnames[-c(1:3)]),
             as.numeric) %>%
-  filter(nchar(ags) == 5) 
+  filter(nchar(ags) == 5) %>%
+  dplyr::select(-name)
 
 ## Split this into yearly data frames
 
-list_df <- lapply(unique(unem_county$year), function(y) {
-  unem_county %>% filter(year == y)
+list_df_unem <- lapply(unique(unem_county$year), function(y) {
+  temp <- unem_county %>% filter(year == y) 
+  
+  ## Rename columns
+  
+  colnames(temp)[3:15] <- paste0(colnames(temp)[3:15], '_', unique(temp$year))
+  
+  ## return this (w/o year)
+  
+  temp %>% dplyr::select(-year)
 }) 
 
-names(list_df) <- paste0('year_', unique(unem_county$year))
+names(list_df_unem) <- paste0('year_', unique(unem_county$year))
 
 #### Religion ####
 
@@ -95,6 +104,17 @@ relig11_wide <- dcast(melt(relig11, id.vars = c("ags", "relig")),
 cnames <- c('ags', 'relig_cath_2011', 
             'relig_prot_2011', 'relig_other_2011')
 colnames(relig11_wide) <- cnames
+
+## Drop NA
+
+relig11_wide$na_all <- relig11_wide %>% select(contains('relig')) %>%
+  apply(., 1, function(x) sum(is.na(x)) == 3)
+
+## Remove all na cases
+
+relig11_wide <- relig11_wide %>%
+  filter(na_all == F) %>%
+  dplyr::select(-contains('na_'))
 
 #### Income ####
 
@@ -139,5 +159,83 @@ wage <- wage %>%
 rm(relig11, unem_county)
 
 #### Population #### 
+
+pop <- read_delim('01_Raw_Data/Counties/pop_dec_2011.csv',
+                  delim = ';', skip = 6) %>%
+  filter(X3 == 'Insgesamt') %>%
+  filter(nchar(X1) == 5) %>%
+  dplyr::select(-one_of('X3'))
+
+## Rename 
+
+colnames(pop) <- varlist <- c('ags', 'name', 
+                   'pop_total',
+                   'pop_total_male', 
+                   'pop_total_female',
+                   'pop_native',
+                   'pop_native_male',
+                   'pop_native_female',
+                   'pop_foreign',
+                   'pop_foreign_male',
+                   'pop_foreign_female')
+
+## Clean up 
+
+pop <- pop %>%
+  mutate_at(vars(varlist[-1:-2]),
+            as.numeric) %>%
+  dplyr::select(-one_of('name')) %>%
+  mutate(pop_foreign_share = pop)
+
+#### Population v2 ####
+
+pop2 <- read_delim('01_Raw_Data/Counties/pop_kreise_from_2009.csv', skip = 5,
+                 delim = ';')
+
+colnames(pop2) <- c('ags', 'name', paste0('pop_', 2009:2016))
+
+## Clean up
+
+pop2 <- pop2 %>% dplyr::select(-one_of('name')) %>%
+  mutate_at(vars(paste0('pop_', 2009:2016)), 
+            as.numeric)
+
+pop2$na_all <- pop2 %>% select(contains('pop')) %>%
+  apply(., 1, function(x) sum(is.na(x)) == 8)
+
+## Remove all na cases
+
+pop2 <- pop2 %>%
+  filter(na_all == F) %>%
+  dplyr::select(-contains('na_'))
+
+#### Combining the complete data ####
+
+## use the income / gdp files as the base files
+
+sum(wage$ags %in% inc$ags) / nrow(inc)
+sum(pop2$ags %in% inc$ags) / nrow(pop2)
+sum(relig11_wide$ags %in% inc$ags) / nrow(relig11_wide)
+
+## Get the ZHB data
+
+regional_final <- inc %>%
+  left_join(., wage) %>%
+  left_join(., pop2) %>%
+  left_join(., relig11_wide) %>%
+  left_join(., list_df_unem[['year_2011']])
+
+## Save for now
+
+write_csv(regional_final, path = '02_Clean_Data/county.csv')
+
+## This is how we can speed up the left_join for a list of data frames
+
+library(tidyverse)
+bla <- reduce(list_df_unem, full_join, by = 'ags')
+  
+
+
+ 
 
 
