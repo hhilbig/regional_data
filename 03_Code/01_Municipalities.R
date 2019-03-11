@@ -36,11 +36,11 @@ colnames(muni09) <- names_table
 ## Some cleanup
 
 muni09 <- muni09 %>% filter(!is.na(gem)) %>%              # Only gemeinden
-  select(-one_of(c('txt', 'satzart'))) %>%                # Drop some vars
+  dplyr::select(-one_of(c('txt', 'satzart'))) %>%                # Drop some vars
   mutate(ags = paste0(land, rb, kreis, gem),              # Gen AGS
          year = 2009,                                     # Add Year
          east = ifelse(as.numeric(land > 10), 1, 0)) %>%  # Add east dummy 
-  select(-one_of(c('rb', 'kreis', 'vg', 'gem'))) %>%      # Drop more vars
+  dplyr::select(-one_of(c('rb', 'kreis', 'vg', 'gem'))) %>%      # Drop more vars
   filter(!pop_tot == 0)                                   # Drop 'fake' Gemeinden
 
 #### 2010 ####
@@ -52,11 +52,11 @@ colnames(muni10) <- names_table
 ## Some cleanup
 
 muni10 <- muni10 %>% filter(!is.na(gem)) %>% 
-  select(-one_of(c('txt', 'satzart'))) %>%
+  dplyr::select(-one_of(c('txt', 'satzart'))) %>%
   mutate(ags = paste0(land, rb, kreis, gem),
          year = 2010,
          east = ifelse(as.numeric(land > 10), 1, 0)) %>%
-  select(-one_of(c('rb', 'kreis', 'vg', 'gem'))) %>%      # Drop more vars
+  dplyr::select(-one_of(c('rb', 'kreis', 'vg', 'gem'))) %>%      # Drop more vars
   filter(!pop_tot == 0)                            
 
 #### 2011 ####
@@ -68,11 +68,11 @@ colnames(muni11) <- c(names_table, paste0('other', 1:4))
 ## Some cleanup
 
 muni11 <- muni11 %>% filter(!is.na(gem)) %>% 
-  select(-one_of(c('txt', 'satzart', paste0('other', 1:4)))) %>%
+  dplyr::select(-one_of(c('txt', 'satzart', paste0('other', 1:4)))) %>%
   mutate(ags = paste0(land, rb, kreis, gem),
          year = 2011,
          east = ifelse(as.numeric(land > 10), 1, 0)) %>%
-  select(-one_of(c('rb', 'kreis', 'vg', 'gem'))) %>%      # Drop more vars
+  dplyr::select(-one_of(c('rb', 'kreis', 'vg', 'gem'))) %>%      # Drop more vars
   filter(!pop_tot == 0)                            
 
 #### 2012 ####
@@ -84,11 +84,11 @@ colnames(muni12) <- c(names_table, paste0('other', 1:4))
 ## Some cleanup
 
 muni12 <- muni12 %>% filter(!is.na(gem)) %>% 
-  select(-one_of(c('txt', 'satzart', paste0('other', 1:4)))) %>%
+  dplyr::select(-one_of(c('txt', 'satzart', paste0('other', 1:4)))) %>%
   mutate(ags = paste0(land, rb, kreis, gem),
          year = 2012,
          east = ifelse(as.numeric(land > 10), 1, 0)) %>%
-  select(-one_of(c('rb', 'kreis', 'vg', 'gem'))) %>%
+  dplyr::select(-one_of(c('rb', 'kreis', 'vg', 'gem'))) %>%
   mutate(lon = str_replace_all(string = lon, 
                                pattern = ',', 
                                replacement = '\\.'),
@@ -107,11 +107,11 @@ colnames(muni13) <- c(names_table, paste0('other', 1:4))
 ## Some cleanup
 
 muni13 <- muni13 %>% filter(!is.na(gem)) %>% 
-  select(-one_of(c('txt', 'satzart', paste0('other', 1:4)))) %>%
+  dplyr::select(-one_of(c('txt', 'satzart', paste0('other', 1:4)))) %>%
   mutate(ags = paste0(land, rb, kreis, gem),
          year = 2013,
          east = ifelse(as.numeric(land > 10), 1, 0)) %>%
-  select(-one_of(c('rb', 'kreis', 'vg', 'gem'))) %>%
+  dplyr::select(-one_of(c('rb', 'kreis', 'vg', 'gem'))) %>%
   mutate(lon = str_replace_all(string = lon, 
                                pattern = ',', 
                                replacement = '\\.'),
@@ -130,11 +130,11 @@ colnames(muni14) <- c(names_table, paste0('other', 1:4))
 ## Some cleanup
 
 muni14 <- muni14 %>% filter(!is.na(gem)) %>% 
-  select(-one_of(c('txt', 'satzart', paste0('other', 1:4)))) %>%
+  dplyr::select(-one_of(c('txt', 'satzart', paste0('other', 1:4)))) %>%
   mutate(ags = paste0(land, rb, kreis, gem),
          year = 2014,
          east = ifelse(as.numeric(land > 10), 1, 0)) %>%
-  select(-one_of(c('rb', 'kreis', 'vg', 'gem'))) %>%
+  dplyr::select(-one_of(c('rb', 'kreis', 'vg', 'gem'))) %>%
   mutate(lon = str_replace_all(string = lon, 
                                pattern = ',', 
                                replacement = '\\.'),
@@ -153,11 +153,11 @@ colnames(muni15) <- c(names_table, paste0('other', 1:4))
 ## Some cleanup
 
 muni15 <- muni15 %>% filter(!is.na(gem)) %>% 
-  select(-one_of(c('txt', 'satzart', paste0('other', 1:4)))) %>%
+  dplyr::select(-one_of(c('txt', 'satzart', paste0('other', 1:4)))) %>%
   mutate(ags = paste0(land, rb, kreis, gem),
          year = 2015,
          east = ifelse(as.numeric(land > 10), 1, 0)) %>%
-  select(-one_of(c('rb', 'kreis', 'vg', 'gem'))) %>%
+  dplyr::select(-one_of(c('rb', 'kreis', 'vg', 'gem'))) %>%
   mutate(lon = str_replace_all(string = lon, 
                                pattern = ',', 
                                replacement = '\\.'),
@@ -176,7 +176,7 @@ colnames(muni16) <- c(names_table, paste0('other', 1:4))
 ## Some cleanup
 
 muni16 <- muni16 %>% filter(!is.na(gem)) %>% 
-  select(-one_of(c('txt', 'satzart', paste0('other', 1:4)))) %>%
+  dplyr::select(-one_of(c('txt', 'satzart', paste0('other', 1:4)))) %>%
   mutate(ags = paste0(land, rb, kreis, gem),
          year = 2016,
          east = ifelse(as.numeric(land > 10), 1, 0)) %>%
@@ -199,11 +199,11 @@ colnames(muni17) <- c(names_table, paste0('other', 1:4))
 ## Some cleanup
 
 muni17 <- muni17 %>% filter(!is.na(gem)) %>% 
-  select(-one_of(c('txt', 'satzart', paste0('other', 1:4)))) %>%
+  dplyr::select(-one_of(c('txt', 'satzart', paste0('other', 1:4)))) %>%
   mutate(ags = paste0(land, rb, kreis, gem),
          year = 2017,
          east = ifelse(as.numeric(land > 10), 1, 0)) %>%
-  select(-one_of(c('rb', 'kreis', 'vg', 'gem'))) %>%
+  dplyr::select(-one_of(c('rb', 'kreis', 'vg', 'gem'))) %>%
   mutate(lon = str_replace_all(string = lon, 
                                pattern = ',', 
                                replacement = '\\.'),
@@ -221,7 +221,7 @@ list_muni <- list(muni09, muni10, muni11, muni12, muni13,
 
 
 
-#### Unemployment data #### 
+#### Add Unemployment data #### 
 
 dir_contents <- dir('01_Raw_Data/Unemployment/')
 
@@ -245,8 +245,8 @@ colnames(unem17) <- cnames
 ## Clean up
 
 unem17 <- unem17 %>% filter(nchar(ags) == 8) %>%
-  select(-one_of(paste0('other', 1:28))) %>% 
-  select(ags, unem_tot, unem_foreigner)
+  dplyr::select(-one_of(paste0('other', 1:28))) %>% 
+  dplyr::select(ags, unem_tot, unem_foreigner)
 
 ## Load 2016
 
@@ -265,8 +265,8 @@ colnames(unem16) <- cnames
 ## Clean up
 
 unem16 <- unem16 %>% filter(nchar(ags) == 8) %>%
-  select(-one_of(paste0('other', 1:28))) %>% 
-  select(ags, unem_tot, unem_foreigner)
+  dplyr::select(-one_of(paste0('other', 1:28))) %>% 
+  dplyr::select(ags, unem_tot, unem_foreigner)
 
 ## Make this a function
 
@@ -292,8 +292,8 @@ cleanup_unem <- function(filepath) {
   ## Clean up
   
   df <- df %>% filter(nchar(ags) == 8) %>%
-    select(-one_of(paste0('other', 1:28))) %>% 
-    select(ags, unem_tot, unem_foreigner)
+    dplyr::select(-one_of(paste0('other', 1:28))) %>% 
+    dplyr::select(ags, unem_tot, unem_foreigner)
   
   ## Return DF
   
